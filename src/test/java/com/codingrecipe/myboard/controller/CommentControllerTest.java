@@ -30,12 +30,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
-@SpringBootTest()
-@AutoConfigureMockMvc
+@SpringBootTest() // ADD.
+@AutoConfigureMockMvc // ADD.
 class CommentControllerTest {
 
-    @Autowired
-    protected MockMvc mockMvc;
+    @Autowired // ADD.
+    protected MockMvc mockMvc; // ADD.
     @Mock
     private CommentService commentService;
     @InjectMocks
@@ -43,8 +43,8 @@ class CommentControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Autowired
-    private CommentRepository commentRepository;
+    @Autowired // ADD.
+    private CommentRepository commentRepository; // ADD.
 
     @BeforeEach
     void setUp() {
@@ -58,11 +58,14 @@ class CommentControllerTest {
         // db 삭제
 //        Long id = 1L;
 //        commentRepository.deleteById(id);
+        // https://dmdrk1414.tistory.com/72 테스트코드 공부 (assertThat)
+        // junit5으로
+        // https://junit.org/junit5/docs/current/user-guide/
         // db 삭제 확인 0을 예상
 //        assertThat(commentRepository.existsById(id)).isFalse();
         // Given
         CommentReqDto commentDTO = new CommentReqDto();
-//        commentDTO.setId(id);
+        commentDTO.setId(100L);
         commentDTO.setCommentWriter("John Doe");
         commentDTO.setCommentContents("This is a test comment.");
 //        commentDTO.setBoardId(123L);
@@ -71,9 +74,10 @@ class CommentControllerTest {
         String url = "/comment/save";
 
         // When
+        // 값이 무조건 있는데
         final String requestBody = objectMapper.writeValueAsString(commentDTO);
-
-        ResultActions result = mockMvc.perform(post(url)
+//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;// ADD.
+        ResultActions result = mockMvc.perform(post(url)  // ADD.
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(requestBody)
